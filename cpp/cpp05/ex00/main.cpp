@@ -19,8 +19,13 @@ int	main(void) {
 		try {
 			Bureaucrat abc_copy = abc;
 			std::cout << abc_copy << std::endl;
+			abc_copy.incrementGrade();
+			std::cout << abc_copy << std::endl;
+			abc_copy.decrementGrade();
+			std::cout << abc_copy << std::endl;
 			std::cout << elite << std::endl;
 			elite.incrementGrade();
+			std::cout << elite << std::endl;
 		} catch (Bureaucrat::GradeTooHighException& e) {
 			std::cout << "too high exception" << std::endl;
 		} catch (Bureaucrat::GradeTooLowException& e) {
