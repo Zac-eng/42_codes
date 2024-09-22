@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  nginx:
+    # build: ./requirements/nginx
+    image: nginx:1.25
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./requirements/nginx/conf:/etc/nginx/conf.d/default.conf
+      - wordpress_files:/var/www/html
+    networks:
+      - proxy
+    depends_on:
+      - wordpress
+
+  wordpress:
+    build: ./requirements/wordpress
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - wordpress_files:/var/www/html
+    networks:
+      - proxy
+      - database
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - containerdb:/var/lib/mysql
+      - ./requirements/mariadb/conf:/etc/mysql/conf.d/my.cnf
+      # - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    networks:
+      - database
+
+volumes:
+  wordpress_files:
+
+  containerdb:
+
+networks:
+  proxy:
+
+  database:
