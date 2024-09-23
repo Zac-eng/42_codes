@@ -2,13 +2,11 @@ version: '3'
 
 services:
   nginx:
-    # build: ./requirements/nginx
-    image: nginx:1.25
+    build: ./requirements/nginx
     restart: always
     ports:
       - 8080:80
     volumes:
-      - ./requirements/nginx/conf:/etc/nginx/conf.d/default.conf
       - wordpress_files:/var/www/html
     networks:
       - proxy
@@ -35,7 +33,6 @@ services:
       - .env
     volumes:
       - containerdb:/var/lib/mysql
-      - ./requirements/mariadb/conf:/etc/mysql/conf.d/my.cnf
     ports:
       - 3306:3306
     networks:
