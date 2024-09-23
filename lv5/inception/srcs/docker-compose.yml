@@ -18,11 +18,8 @@ services:
   wordpress:
     build: ./requirements/wordpress
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - wordpress_files:/var/www/html
     networks:
@@ -32,17 +29,13 @@ services:
       - mariadb
 
   mariadb:
-    image: mysql:8.0
+    build: ./requirements/mariadb
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - containerdb:/var/lib/mysql
       - ./requirements/mariadb/conf:/etc/mysql/conf.d/my.cnf
-      # - ./docker/mysql/sql:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     networks:
