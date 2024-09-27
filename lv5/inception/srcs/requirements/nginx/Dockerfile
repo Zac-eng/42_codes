@@ -15,7 +15,9 @@ RUN chown -R www-data:www-data /var/www/ \
 && chmod -R 755 /var/www/
 
 COPY ./conf /etc/nginx/conf.d/default.conf
+COPY ./credencials/server.nginx.pem /etc/nginx/ssl/server.nginx.pem
+COPY ./credencials/server.key /etc/nginx/ssl/server.key
 
-EXPOSE 80
+EXPOSE 443
 
 CMD [ "nginx", "-g", "daemon off;" ]
