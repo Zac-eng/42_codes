@@ -3,6 +3,7 @@
 
 # include "AForm.hpp"
 # include <fstream>
+# include <iostream>
 
 # define SHRUBBERY_SIGN_GRADE 145
 # define SHRUBBERY_EXEC_GRADE 137
@@ -15,7 +16,7 @@ public:
 	ShrubberyCreationForm(const ShrubberyCreationForm& object);
 	~ShrubberyCreationForm();
 	ShrubberyCreationForm& operator = (const ShrubberyCreationForm& object);
-	bool execute(Bureaucrat const & executor) const;
+	void execute(Bureaucrat const & executor) const;
 
 };
 

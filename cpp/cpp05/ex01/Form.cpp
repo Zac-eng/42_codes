@@ -10,13 +10,11 @@ Form::Form(std::string name, int sign_grade, int exec_grade): _name(name), _sign
 }
 
 Form::Form(const Form& object): _name(object.getName()), _sign_grade(object.getSignGrade()), _exec_grade(object.getExecGrade()) {
-	(void)object;
-	this->_signed = false;
+	*this = object;
 }
 
 Form& Form::operator = (const Form& object) {
-	(void)object;
-	this->_signed = false;
+	this->_signed = object.getSigned();
 	return *this;
 }
 

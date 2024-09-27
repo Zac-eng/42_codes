@@ -9,6 +9,12 @@ class Bureaucrat;
 
 class Form {
 
+private:
+	const std::string	_name;
+	bool							_signed;
+	const int					_sign_grade;
+	const int					_exec_grade;
+
 public:
 	Form(void);
 	Form(std::string name, int sign_grade, int exec_grade);
@@ -22,12 +28,6 @@ public:
 	int				getSignGrade(void) const;
 	int				getExecGrade(void) const;
 	void			beSigned(Bureaucrat& signer);
-
-private:
-	const std::string	_name;
-	bool				_signed;
-	const int			_sign_grade;
-	const int			_exec_grade;
 
 };
 
