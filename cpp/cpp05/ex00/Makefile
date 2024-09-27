@@ -1,7 +1,7 @@
 NAME=bureaucrat
 CXX=c++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++98
-SRCS= main.cpp Bureaucrat.cpp
+SRCS = $(shell find . -type f -name '*.cpp')
 OBJS= $(SRCS:.cpp=.o)
 
 %.o: %.cpp
