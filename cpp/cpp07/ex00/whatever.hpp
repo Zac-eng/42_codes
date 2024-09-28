@@ -5,10 +5,10 @@
 
 template <typename T>
 void swap(T& lhs, T& rhs) {
-  std::string& tmp = rhs;
+  T tmp = rhs;
 
-  lhs = rhs;
-  rhs = tmp;
+  rhs = lhs;
+  lhs = tmp;
 }
 
 template <typename T>
