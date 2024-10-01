@@ -2,6 +2,8 @@
 # define SERIALIZER_HPP
 
 # include "Data.hpp"
+//necessary to use uintptr_t since <cstdint> is available on C++11
+# include <stdint.h>
 
 class Serializer {
 
