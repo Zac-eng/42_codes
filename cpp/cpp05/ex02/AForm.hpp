@@ -11,9 +11,9 @@ class AForm {
 
 private:
 	const std::string	_name;
-	bool							_signed;
-	const int					_sign_grade;
-	const int					_exec_grade;
+	bool				_signed;
+	const int			_sign_grade;
+	const int			_exec_grade;
 
 public:
 	AForm(void);
@@ -25,10 +25,11 @@ public:
 	class GradeTooLowException: public std::exception {};
 	class NotSignedException: public std::exception {};
 	std::string		getName(void) const;
-	bool					getSigned(void) const;
-	int						getSignGrade(void) const;
-	int						getExecGrade(void) const;
-	void					beSigned(Bureaucrat& signer);
+	bool			getSigned(void) const;
+	int				getSignGrade(void) const;
+	int				getExecGrade(void) const;
+	void			beSigned(Bureaucrat& signer);
+	void			checkExecutable(Bureaucrat const & executor) const;
 	virtual void	execute(Bureaucrat const & executor) const = 0;
 
 };

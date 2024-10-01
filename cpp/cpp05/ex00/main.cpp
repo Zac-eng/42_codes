@@ -8,6 +8,10 @@ int	main(void) {
 	{
 		try {
 			std::cout << bureaucrat << std::endl;
+			bureaucrat.incrementGrade();
+			std::cout << bureaucrat << std::endl;
+			bureaucrat.decrementGrade();
+			std::cout << bureaucrat << std::endl;
 			bureaucrat.decrementGrade();
 		} catch (Bureaucrat::GradeTooHighException& e) {
 			std::cout << "too high exception" << std::endl;

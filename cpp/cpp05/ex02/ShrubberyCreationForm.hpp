@@ -3,7 +3,6 @@
 
 # include "AForm.hpp"
 # include <fstream>
-# include <iostream>
 
 # define SHRUBBERY_SIGN_GRADE 145
 # define SHRUBBERY_EXEC_GRADE 137

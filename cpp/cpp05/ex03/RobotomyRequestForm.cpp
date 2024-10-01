@@ -17,10 +17,7 @@ RobotomyRequestForm& RobotomyRequestForm::operator = (const RobotomyRequestForm&
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const {
-  if (this->getSigned() == false)
-    throw NotSignedException();
-  else if (executor.getGrade() > this->getExecGrade())
-		throw GradeTooLowException();
+  checkExecutable(executor);
   std::cout << "Drrrrrrrr......" << std::endl; 
   srand(static_cast<unsigned int>(time(0)));
   bool robotomizable = rand() % 2;

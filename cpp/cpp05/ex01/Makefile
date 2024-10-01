@@ -1,4 +1,4 @@
-NAME=bureaucrat
+NAME=bureaucrat_with_form
 CXX=c++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++98
 SRCS = $(shell find . -type f -name '*.cpp')

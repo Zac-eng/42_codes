@@ -1,19 +1,37 @@
 #include "Bureaucrat.hpp"
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 int	main(void) {
-	Bureaucrat				crew("crew", 120);
-	Bureaucrat				elite("elite", 1);
-	ShrubberyCreationForm	tree_form("home");
-	RobotomyRequestForm robo_form("robby");
-
-	tree_form = ShrubberyCreationForm("home");
-	crew.executeForm(tree_form);
-	crew.signForm(tree_form);
-	crew.executeForm(tree_form);
-	crew.signForm(robo_form);
-	elite.signForm(robo_form);
-	elite.executeForm(robo_form);
+	{
+		Bureaucrat	robo_executor("robo", 45);
+		Intern someRandomIntern;
+		AForm* rrf;
+		rrf = someRandomIntern.makeForm("robotomy request", "Bender");
+		if (rrf == NULL)
+			return 1;
+		robo_executor.executeForm(*rrf);
+		robo_executor.signForm(*rrf);
+		robo_executor.executeForm(*rrf);
+		delete rrf;
+	}
+	{
+		Bureaucrat	pp_executor("elite", 5);
+		Intern someRandomIntern;
+		AForm* ppf;
+		ppf = someRandomIntern.makeForm("presidentialpardon", "speaker");
+		if (ppf == NULL) {
+			std::cout << "wrong form name detected appropriately!" << std::endl;
+		}
+		ppf = someRandomIntern.makeForm("presidential pardon", "speaker");
+		if (ppf == NULL)
+			return 1;
+		pp_executor.executeForm(*ppf);
+		pp_executor.signForm(*ppf);
+		pp_executor.executeForm(*ppf);
+		delete ppf;
+	}
 	return 0;
 }
