@@ -10,7 +10,8 @@ RUN apt update && apt install -y \
   php${PHP_VERSION}-xml \
   php${PHP_VERSION}-mbstring \
   php${PHP_VERSION}-zip \
-  php${PHP_VERSION}-intl
+  php${PHP_VERSION}-intl\
+  mariadb-client 
 
 COPY php.ini /usr/local/etc/php/
 COPY ./conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
