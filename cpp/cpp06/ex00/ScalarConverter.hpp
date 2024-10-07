@@ -2,19 +2,19 @@
 # define SCALAR_CONVERTER_HPP
 
 # include <iostream>
+# include <sstream>
 # include <string>
 # include <cctype>
 # include <stdexcept>
 
-class ScalarConverter {
+union Representations {
+  char c;
+  int i;
+  float f;
+  double d;
+};
 
-private:
-  static bool isInt(std::string rep);
-  static bool isFloat(std::string rep);
-  static bool isDouble(std::string rep);
-  static void printInt(int input);
-  static void printFloat(float input);
-  static void printDouble(double input);
+class ScalarConverter {
 
 public:
   ScalarConverter(void);
