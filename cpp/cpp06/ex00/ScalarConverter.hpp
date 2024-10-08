@@ -6,6 +6,7 @@
 # include <string>
 # include <cctype>
 # include <stdexcept>
+# include <iomanip>
 
 class ScalarConverter {
 

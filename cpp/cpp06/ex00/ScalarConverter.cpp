@@ -39,6 +39,7 @@ void ScalarConverter::convert(std::string rep) {
         continue ;
       }
       ss.str(rep);
+      rep.push_back('f');
       ss >> rep_float;
       if (!ss.fail() && ss.eof()) {
         rep_char = static_cast<unsigned char>(rep_float);
@@ -46,6 +47,7 @@ void ScalarConverter::convert(std::string rep) {
         rep_double = static_cast<double>(rep_float);
         break ;
       }
+
     }
     else if (i == 2) {
       ss.str(rep);
@@ -63,11 +65,19 @@ void ScalarConverter::convert(std::string rep) {
     return ;
   }
   std::cout << "char: ";
-  if (std::isprint(rep_char))
+  if (!std::isfinite(rep_float))
+    std::cout << "impossible" << std::endl;
+  else if (std::isprint(rep_char))
     std::cout << "\'" << rep_char << "\'" << std::endl;
   else
     std::cout << "Non displayable" << std::endl;
-  std::cout << "int: " << rep_int << std::endl;
-  std::cout << "float: " << rep_float << (rep_float == static_cast<float>(rep_int) ? ".0" : "") << "f" << std::endl;
-  std::cout << "double: " << rep_double << (rep_float == static_cast<float>(rep_int) ? ".0" : "") << std::endl;
+  std::cout << "int: ";
+  if (!std::isfinite(rep_float))
+    std::cout << "impossible" << std::endl;
+  else
+    std::cout << rep_int << std::endl;
+  if (std::floor(rep_double) == rep_double)
+    std::cout << std::fixed << std::setprecision(1);
+  std::cout << "float: " << rep_float << "f" << std::endl;
+  std::cout << "double: " << rep_double  << std::endl;
 }
