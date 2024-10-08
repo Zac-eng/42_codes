@@ -7,13 +7,6 @@
 # include <cctype>
 # include <stdexcept>
 
-union Representations {
-  char c;
-  int i;
-  float f;
-  double d;
-};
-
 class ScalarConverter {
 
 public:
