@@ -4,9 +4,9 @@
 # include <iostream>
 # include <sstream>
 # include <string>
-# include <cctype>
-# include <stdexcept>
 # include <iomanip>
+# include <cmath>
+# include <limits>
 
 class ScalarConverter {
 
