@@ -1,4 +1,4 @@
-NAME=span
+NAME=stack_with_iter
 CXX=c++
 CXXFLAGS=-Wall -Wextra -Werror -std=c++98
 SRCS = $(wildcard *.cpp)
