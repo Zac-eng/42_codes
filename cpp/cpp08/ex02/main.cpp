@@ -14,12 +14,17 @@ int main()
   mstack.push(5);
   mstack.push(737);
   mstack.push(0);
-  // MutantStack<int>::iterator it = mstack.begin();
-  // MutantStack<int>::iterator ite = mstack.end();
-  // ++it;
-  // --it;
+  MutantStack<int>::iterator it = mstack.begin();
+  MutantStack<int>::iterator ite = mstack.end();
+  ++it;
+  std::cout << *it << std::endl;
+  --it;
+  std::cout << *it << std::endl;
+
+  // std::cout << (it == ite) << std::endl;
   // while (it != ite)
   // {
+  //   std::cout << *ite << std::endl;
   //   std::cout << *it << std::endl;
   //   ++it;
   // }
