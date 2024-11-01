@@ -8,11 +8,14 @@
 template <typename T>
 class MutantStack: public std::stack<T> {
 
+private:
+  const T _end;
+
 public:
   class iterator;
   MutantStack(void);
   MutantStack(const MutantStack& object);
-  ~MutantStack() {}
+  ~MutantStack();
   MutantStack& operator = (const MutantStack& object);
   iterator begin();
   iterator end();
