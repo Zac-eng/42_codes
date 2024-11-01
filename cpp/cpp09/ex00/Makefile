@@ -1,7 +1,7 @@
 NAME=btc
 CPP=c++
 CPPFLAGS=-Wall -Wextra -Werror -std=c++98
-SRCS= $(shell find . -type f -name '*.cpp')
+SRCS= $(wildcard *.cpp)
 OBJS= $(SRCS:.cpp=.o)
 
 %.o: %.cpp
