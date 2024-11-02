@@ -3,26 +3,33 @@
 
 # include <string>
 # include <fstream>
+# include <sstream>
+# include <iostream>
 # include <exception>
 # include <map>
 
-typedef struct date {
+struct Date {
 	unsigned int year;
 	unsigned int month;
 	unsigned int day;
-} t_date;
+	bool operator < (const struct Date& object) const;
+};
+
+std::ostream& operator << (std::ostream& os, const Date& object);
 
 class BitCoin {
 
 private:
 	BitCoin(void);
-	static std::map<t_date, double> _database;
+	std::map<Date, double> _database;
 	void readDataBase(const std::string& db_path);
-	t_date parseDate(const std::string& date);
-	double parseValue(const std::string& value);
-	class FileException: public std::exception;
-	class NegativeValueException: public std::exception;
-	class LargeValueException: public std::exception;
+	double findExchangeRate(Date& date) const;
+	void parseDate(const std::string& date_string, Date& date_struct);
+	void parseValue(const std::string& value_string, double& value_double);
+	std::string trim(const std::string& str_to_trim);
+	class InvalidDateException: public std::exception {};
+	class NegativeValueException: public std::exception {};
+	class LargeValueException: public std::exception {};
 
 public:
 	BitCoin(const std::string& csv_path);
