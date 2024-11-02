@@ -26,7 +26,10 @@ private:
 	double findExchangeRate(Date& date) const;
 	void parseDate(const std::string& date_string, Date& date_struct);
 	void parseValue(const std::string& value_string, double& value_double);
+	bool isValidDate(const Date& date) const;
 	std::string trim(const std::string& str_to_trim);
+	class FileException: public std::exception {};
+	class TooEarlyException: public std::exception {};
 	class InvalidDateException: public std::exception {};
 	class NegativeValueException: public std::exception {};
 	class LargeValueException: public std::exception {};
