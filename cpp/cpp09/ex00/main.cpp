@@ -8,8 +8,6 @@ int main(int argc, char* argv[]) {
 		std::cerr << "please pass a file as an argument" << std::endl;
 		return 1;
 	}
-	(void)argv;
-	// (void)btc;
-	btc.printPrice("sample.txt");
+	btc.printPrice(argv[1]);
 	return 0;
 }

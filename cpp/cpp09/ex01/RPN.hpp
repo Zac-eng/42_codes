@@ -3,13 +3,18 @@
 # define RPN_HPP
 
 # include <stack>
+# include <exception>
 
-class RPN: public std::stack<double> {
+class RPN: public std::stack<int> {
 
 public:
 	RPN(void);
 	~RPN();
-	void operator + (void);
+	class FewElementException: public std::exception {};
+	void add(void);
+	void sub(void);
+	void mul(void);
+	void div(void);
 
 };
 
