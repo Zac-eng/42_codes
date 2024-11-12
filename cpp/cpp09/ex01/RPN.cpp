@@ -5,8 +5,8 @@ RPN::RPN(void) {}
 RPN::~RPN() {}
 
 void RPN::add(void) {
-	double lhs;
-	double rhs;
+	int lhs;
+	int rhs;
 
 	if (size() <= 1)
 		throw FewElementException();
@@ -18,8 +18,8 @@ void RPN::add(void) {
 }
 
 void RPN::sub(void) {
-	double lhs;
-	double rhs;
+	int lhs;
+	int rhs;
 
 	if (size() <= 1)
 		throw FewElementException();
@@ -31,8 +31,8 @@ void RPN::sub(void) {
 }
 
 void RPN::mul(void) {
-	double lhs;
-	double rhs;
+	int lhs;
+	int rhs;
 
 	if (size() <= 1)
 		throw FewElementException();
@@ -44,8 +44,8 @@ void RPN::mul(void) {
 }
 
 void RPN::div(void) {
-	double lhs;
-	double rhs;
+	int lhs;
+	int rhs;
 
 	if (size() <= 1)
 		throw FewElementException();
