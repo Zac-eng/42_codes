@@ -25,7 +25,6 @@ private:
 
 public:
 	class InvalidInputException: std::exception {};
-	class NegativeValueException: std::exception {};
 	static void mSortQue(const std::string& i_sequence);
 	// static void mSortLst(const std::string& i_sequence);
 

@@ -28,18 +28,14 @@ void PmergeMe::createQue(const std::string& i_sequence, std::queue<int>& to_push
 	std::stringstream ss(i_sequence);
 	int tmp;
 
-	while (true) {
+	while (!ss.eof()) {
 		std::queue<int> tmp_que;
 
 		ss >> tmp;
-		if (ss.fail()) {
-			std::cerr << "Input array invalid" << std::endl;
+		if (ss.fail())
 			throw InvalidInputException();
-		}
-		if (ss.eof())
-			break ;
 		if (tmp < 0)
-			throw NegativeValueException();
+			throw InvalidInputException();
 		to_push.push(tmp);
 	}
 }
