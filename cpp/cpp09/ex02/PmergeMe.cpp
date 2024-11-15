@@ -3,41 +3,37 @@
 void PmergeMe::mSortQue(const std::string& i_sequence) {
 	std::queue<int> input;
 	std::queue<std::queue<int> > grand;
-	std::size_t element_num;
 	std::clock_t start;
 	std::clock_t end;
 
 	start = std::clock();
 	createQue(i_sequence, input);
-	std::cout << "Before:\t";
-	printQue(input);
-	element_num = input.size();
-	std::cout << std::endl;
 	devideQue(input, grand);
 	while (grand.size() > 1)
 		mergeQue(grand);
+	end = std::clock();
+	std::cout << "Before:\t";
+	printQue(input);
+	std::cout << std::endl;
 	std::cout << "After:\t";
 	printQue(grand.front());
 	std::cout << std::endl;
-	end = std::clock();
-	printTimeSpent(element_num, QUEUE, end - start);
+	printTimeSpent(input.size(), QUEUE, end - start);
 }
 
 void PmergeMe::mSortLst(const std::string& i_sequence) {
 	std::list<int> input;
 	std::list<std::list<int> > grand;
-	std::size_t element_num;
 	std::clock_t start;
 	std::clock_t end;
 
 	start = std::clock();
 	createLst(i_sequence, input);
-	element_num = input.size();
 	devideLst(input, grand);
 	while (grand.size() > 1)
 		mergeLst(grand);
 	end = std::clock();
-	printTimeSpent(element_num, LIST, end - start);
+	printTimeSpent(input.size(), LIST, end - start);
 }
 
 void PmergeMe::createQue(const std::string& i_sequence, std::queue<int>& to_push) {
@@ -73,22 +69,26 @@ void PmergeMe::createLst(const std::string& i_sequence, std::list<int>& to_push)
 }
 
 
-void PmergeMe::devideQue(std::queue<int>& original, std::queue<std::queue<int> >& to_push) {
-	while (!original.empty()) {
+void PmergeMe::devideQue(const std::queue<int>& original, std::queue<std::queue<int> >& to_push) {
+	std::queue<int> que_copy = original;
+
+	while (!que_copy.empty()) {
 		std::queue<int> tmp_que;
 
-		tmp_que.push(original.front());
-		original.pop();
+		tmp_que.push(que_copy.front());
+		que_copy.pop();
 		to_push.push(tmp_que);
 	}
 }
 
-void PmergeMe::devideLst(std::list<int>& original, std::list<std::list<int> >& to_push) {
-	while (!original.empty()) {
+void PmergeMe::devideLst(const std::list<int>& original, std::list<std::list<int> >& to_push) {
+	std::list<int> list_copy = original;
+
+	while (!list_copy.empty()) {
 		std::list<int> tmp_lst;
 
-		tmp_lst.push_back(original.front());
-		original.pop_front();
+		tmp_lst.push_back(list_copy.front());
+		list_copy.pop_front();
 		to_push.push_back(tmp_lst);
 	}
 }
