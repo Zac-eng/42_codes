@@ -11,8 +11,9 @@ int main(int argc, char* argv[]) {
 	}
 	try {
 		PmergeMe::mSortQue(ss.str());
+		PmergeMe::mSortLst(ss.str());
 	} catch (PmergeMe::InvalidInputException& iie) {
-		std::cerr << "The input should be a sequence of positive integer" << std::endl;
+		std::cerr << "Error" << std::endl;
 		return 1;
 	}
 	return 0;
