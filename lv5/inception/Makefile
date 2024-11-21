@@ -1,20 +1,16 @@
 NAME=inception
+COMPOSE_FILE=./srcs/docker-compose.yml
+COMPOSE=docker-compose -f $(COMPOSE_FILE)
 
 all: $(NAME)
 
 $(NAME):
-	@cd ./srcs
-	docker-compose up -d
-	@cd ..
-	# echo "127.0.0.1 hmiyazak.42.fr" >> /etc/hosts
-	# sudo dscacheutil -flushcache
-	# sudo killall -HUP mDNSResponder
+	$(COMPOSE) up -d
 
 clean:
-	@cd ./srcs
-	docker-compose down
-	@cd ..
+	$(COMPOSE) down
 
-fclean: clean
+fclean:
+	$(COMPOSE) down --rmi all
 
 re: fclean all

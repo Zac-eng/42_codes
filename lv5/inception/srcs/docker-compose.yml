@@ -8,7 +8,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - wordpress_files:/var/www/html
+      - /home/hmiyazak/data/wordpress_files:/var/www/html
     networks:
       - proxy
     depends_on:
@@ -21,7 +21,7 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress_files:/var/www/html
+      - /home/hmiyazak/data/wordpress_files:/var/www/html
     networks:
       - proxy
       - database
@@ -35,16 +35,11 @@ services:
     env_file:
       - .env
     volumes:
-      - containerdb:/var/lib/mysql
+      - /home/hmiyazak/data/mysql:/var/lib/mysql
     ports:
       - 3306:3306
     networks:
       - database
-
-volumes:
-  wordpress_files:
-
-  containerdb:
 
 networks:
   proxy:
