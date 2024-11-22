@@ -38,11 +38,7 @@ public:
 	BitCoin& operator = (const BitCoin& object);
 	int readDataBase(void);
 	void printPrice(const std::string& date_n_value);
-	class FileException: public std::exception {};
 	class TooEarlyException: public std::exception {};
-	class InvalidDateException: public std::exception {};
-	class InvalidValueException: public std::exception {};
-	class LargeValueException: public std::exception {};
 
 };
 

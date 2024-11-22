@@ -90,7 +90,7 @@ int BitCoin::parseDate(const std::string& date_string, Date& date_struct) {
 	if (removed != '-' || ss.fail() || ss.eof())
 		return 1;
 	ss >> date_struct.day;
-	if (ss.fail())
+	if (ss.fail() || !ss.eof())
 		return 1;
 	if (!isValidDate(date_struct))
 		return 1;
@@ -164,7 +164,7 @@ void BitCoin::printPrice(const std::string& date_n_value) {
 			std::cerr << "Error: the date is invalid." << std::endl;
 			continue ;
 		}
-		if (parseValue(trim(line.substr(pipe_pos + 1, line.length())), value)) {
+		if (parseValue(trim(line.substr(pipe_pos + 1, line.length())), value) != 0) {
 			std::cerr << "Error: not a positive number." << std::endl;
 			continue ;
 		}
