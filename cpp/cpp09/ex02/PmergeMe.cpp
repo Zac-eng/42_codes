@@ -39,6 +39,7 @@ void PmergeMe::mSortLst(const std::string& i_sequence) {
 void PmergeMe::createQue(const std::string& i_sequence, std::queue<int>& to_push) {
 	std::stringstream ss(i_sequence);
 	int tmp;
+	char next;
 
 	while (!ss.eof()) {
 		std::queue<int> tmp_que;
@@ -49,12 +50,18 @@ void PmergeMe::createQue(const std::string& i_sequence, std::queue<int>& to_push
 		if (tmp < 0)
 			throw InvalidInputException();
 		to_push.push(tmp);
+		next = ss.peek();
+		while (std::isspace(next)) {
+			ss.get(next);
+			next = ss.peek();
+		}
 	}
 }
 
 void PmergeMe::createLst(const std::string& i_sequence, std::list<int>& to_push) {
 	std::stringstream ss(i_sequence);
 	int tmp;
+	char next;
 
 	while (!ss.eof()) {
 		std::list<int> tmp_lst;
@@ -65,6 +72,11 @@ void PmergeMe::createLst(const std::string& i_sequence, std::list<int>& to_push)
 		if (tmp < 0)
 			throw InvalidInputException();
 		to_push.push_back(tmp);
+		next = ss.peek();
+		while (std::isspace(next)) {
+			ss.get(next);
+			next = ss.peek();
+		}
 	}
 }
 

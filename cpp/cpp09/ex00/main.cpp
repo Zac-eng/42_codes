@@ -1,5 +1,4 @@
 #include "BitCoin.hpp"
-#include <iostream>
 
 int main(int argc, char* argv[]) {
 	BitCoin btc("data.csv");
@@ -8,6 +7,8 @@ int main(int argc, char* argv[]) {
 		std::cerr << "please pass a file as an argument" << std::endl;
 		return 1;
 	}
+	if (btc.readDataBase() != 0)
+		return 1;
 	btc.printPrice(argv[1]);
 	return 0;
 }

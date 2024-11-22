@@ -1,8 +1,6 @@
 #include "BitCoin.hpp"
 
-BitCoin::BitCoin(const std::string& csv_path) {
-	readDataBase(csv_path);
-}
+BitCoin::BitCoin(const std::string& database_path): _database_path(database_path) {}
 
 BitCoin::~BitCoin() {}
 
@@ -11,6 +9,7 @@ BitCoin::BitCoin(const BitCoin& object) {
 }
 
 BitCoin& BitCoin::operator = (const BitCoin& object) {
+	_database_path = object._database_path;
 	_database = object._database;
 	return *this;
 }
@@ -24,72 +23,89 @@ bool Date::operator < (const Date& object) const {
 		return day < object.day;
 }
 
-void BitCoin::readDataBase(const std::string& db_path) {
-	std::ifstream csv_stream(db_path.c_str());
+int BitCoin::readDataBase(void) {
+	std::ifstream csv_stream(_database_path.c_str());
 	std::string line;
 	std::string::size_type comma_pos;
 	Date date;
 	double value;
 
 	if (!csv_stream) {
-		std::cerr << "No such csv file for database" << std::endl;
-		throw FileException();
+		std::cerr << "Error: Could not open csv file for database: " << _database_path << std::endl;
+		return 1;
 	}
 	getline(csv_stream, line);
 	if (csv_stream.fail()) {
-		std::cerr << "Failed to read from csv file" << std::endl;
-		throw FileException();
+		std::cerr << "Error: Failed to read from csv file" << std::endl;
+		return 1;
+	}
+	else if (line != "date,exchange_rate") {
+		std::cerr << "Error: Invalid firstline in database, it should be 'date,exchange_rate'" << std::endl;
+		return 1;
 	}
 	while (!csv_stream.eof()) {
 		getline(csv_stream, line);
 		if (line.empty())
 			continue ;
 		else if (csv_stream.fail()) {
-			std::cerr << "Failed to read from csv file" << std::endl;
-			throw FileException();
+			std::cerr << "Error: Failed to read from csv file" << std::endl;
+			return 1;
 		}
 		comma_pos = line.find(',');
 		if (csv_stream.fail() || comma_pos == std::string::npos) {
-			std::cerr << "Invalid date format, it should be 'date,exchange rate'" << std::endl;
-			throw FileException();
+			std::cerr << "Error: Invalid data format, it should be 'date,exchange rate'" << std::endl;
+			return 1;
 		}
-		parseDate(line.substr(0, comma_pos), date);
-		parseValue(line.substr(comma_pos + 1, line.length()), value);
+		if (parseDate(line.substr(0, comma_pos), date) != 0) {
+			std::cerr << "Error: Invalid date in the database" << std::endl;
+			return 1;
+		}
+		if (parseValue(line.substr(comma_pos + 1, line.length()), value) != 0) {
+			std::cerr << "Error: Invalid value in the database" << std::endl;
+			return 1;
+		}
+		if (_database.size() > 0 && !(_database.rbegin()->first < date)) {
+			std::cerr << "Error: Database does not follow the timeline" << std::endl;
+			return 1;
+		}
 		_database.insert(std::make_pair(date, value));
 	}
+	return 0;
 }
 
-void BitCoin::parseDate(const std::string& date_string, Date& date_struct) {
+int BitCoin::parseDate(const std::string& date_string, Date& date_struct) {
 	std::stringstream ss(trim(date_string));
 	char removed;
 
 	ss >> date_struct.year;
 	if (ss.fail() || ss.eof())
-		throw InvalidDateException();
+		return 1;
 	ss.get(removed);
 	if (removed != '-' || ss.fail() || ss.eof())
-		throw InvalidDateException();
+		return 1;
 	ss >> date_struct.month;
 	if (ss.fail() || ss.eof())
-		throw InvalidDateException();
+		return 1;
 	ss.get(removed);
 	if (removed != '-' || ss.fail() || ss.eof())
-		throw InvalidDateException();
+		return 1;
 	ss >> date_struct.day;
 	if (ss.fail())
-		throw InvalidDateException();
+		return 1;
 	if (!isValidDate(date_struct))
-		throw InvalidDateException();
+		return 1;
+	return 0;
 }
 
-void BitCoin::parseValue(const std::string& value_string, double& value_double) {
+int BitCoin::parseValue(const std::string& value_string, double& value_double) {
 	std::stringstream ss(trim(value_string));
 
 	ss >> value_double;
-	if (ss.fail())
-		throw FileException();
+	if (ss.fail() || !ss.eof())
+		return 1;
 	if (value_double < 0)
-		throw NegativeValueException();
+		return 1;
+	return 0;
 }
 
 double BitCoin::findExchangeRate(Date& date) const {
@@ -122,13 +138,13 @@ void BitCoin::printPrice(const std::string& date_n_value) {
 	double value;
 
 	if (!ifs) {
-		std::cerr << "No such file or directory: " << date_n_value << std::endl;
+		std::cerr << "Error: Could not open file: " << date_n_value << std::endl;
 		return ;
 	}
 	getline(ifs, line);
 	pipe_pos = line.find('|');
 	if (trim(line.substr(0, pipe_pos)) != "date" || trim(line.substr(pipe_pos + 1, line.length())) != "value") {
-		std::cerr << "The first line of input file should be 'date | value'" << std::endl;
+		std::cerr << "Error: The first line of the input file should be 'date | value'" << std::endl;
 		return ;
 	}
 	while (!ifs.eof()) {
@@ -136,7 +152,7 @@ void BitCoin::printPrice(const std::string& date_n_value) {
 		if (line.empty())
 			continue ;
 		else if (ifs.fail()) {
-			std::cerr << "Failed to read from input file" << std::endl;
+			std::cerr << "Error: Failed to read from input file" << std::endl;
 			return ;
 		}
 		pipe_pos = line.find('|');
@@ -144,23 +160,23 @@ void BitCoin::printPrice(const std::string& date_n_value) {
 			std::cerr << "Error: bad input => " << line << std::endl;
 			continue ;
 		}
+		if (parseDate(trim(line.substr(0, pipe_pos)), date) != 0) {
+			std::cerr << "Error: the date is invalid." << std::endl;
+			continue ;
+		}
+		if (parseValue(trim(line.substr(pipe_pos + 1, line.length())), value)) {
+			std::cerr << "Error: not a positive number." << std::endl;
+			continue ;
+		}
+		else if (value > 1000) {
+			std::cerr << "Error: too large a number." << std::endl;
+			continue ;
+		}
 		try {
-			parseDate(trim(line.substr(0, pipe_pos)), date);
-			parseValue(trim(line.substr(pipe_pos + 1, line.length())), value);
-			if (value > 1000)
-				throw LargeValueException();
 			ex_rate = findExchangeRate(date);
 			std::cout << date << " => " << value << " = " << (ex_rate * value) << std::endl;
-		} catch (FileException& fe) {
-			std::cerr << "Error: error occurred readling from file" << std::endl;
 		} catch (TooEarlyException& tee) {
 			std::cerr << "Error: the date is too early." << std::endl;
-		} catch (InvalidDateException& ide) {
-			std::cerr << "Error: the date is invalid." << std::endl;
-		} catch (NegativeValueException& nve) {
-			std::cerr << "Error: not a positive number." << std::endl;
-		} catch (LargeValueException& lve) {
-			std::cerr << "Error: too large a number." << std::endl;
 		}
 	}
 }
@@ -180,6 +196,6 @@ bool BitCoin::isValidDate(const Date& date) const {
 }
 
 std::ostream& operator << (std::ostream& os, const Date& object) {
-	os << object.year << "-" << object.month << "-" << object.day;
+	os << object.year << "-" << std::setfill('0') << std::setw(2) << object.month << "-" << std::setfill('0') << std::setw(2) << object.day;
 	return os;
 }
