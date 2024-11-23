@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
 			ss << " ";
 	}
 	try {
-		PmergeMe::mSortQue(ss.str());
+		PmergeMe::mSortDeQue(ss.str());
 		PmergeMe::mSortLst(ss.str());
 	} catch (PmergeMe::InvalidInputException& iie) {
 		std::cerr << "Error" << std::endl;

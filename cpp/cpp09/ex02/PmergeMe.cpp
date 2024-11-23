@@ -1,24 +1,24 @@
 #include "PmergeMe.hpp"
 
-void PmergeMe::mSortQue(const std::string& i_sequence) {
-	std::queue<int> input;
-	std::queue<std::queue<int> > grand;
+void PmergeMe::mSortDeQue(const std::string& i_sequence) {
+	std::deque<int> input;
+	std::deque<std::deque<int> > grand;
 	std::clock_t start;
 	std::clock_t end;
 
 	start = std::clock();
-	createQue(i_sequence, input);
-	devideQue(input, grand);
+	createDeQue(i_sequence, input);
+	devideDeQue(input, grand);
 	while (grand.size() > 1)
-		mergeQue(grand);
+		mergeDeQue(grand);
 	end = std::clock();
 	std::cout << "Before:\t";
-	printQue(input);
+	printDeQue(input);
 	std::cout << std::endl;
 	std::cout << "After:\t";
-	printQue(grand.front());
+	printDeQue(grand.front());
 	std::cout << std::endl;
-	printTimeSpent(input.size(), QUEUE, end - start);
+	printTimeSpent(input.size(), DEQUE, end - start);
 }
 
 void PmergeMe::mSortLst(const std::string& i_sequence) {
@@ -36,20 +36,20 @@ void PmergeMe::mSortLst(const std::string& i_sequence) {
 	printTimeSpent(input.size(), LIST, end - start);
 }
 
-void PmergeMe::createQue(const std::string& i_sequence, std::queue<int>& to_push) {
+void PmergeMe::createDeQue(const std::string& i_sequence, std::deque<int>& to_push) {
 	std::stringstream ss(i_sequence);
 	int tmp;
 	char next;
 
 	while (!ss.eof()) {
-		std::queue<int> tmp_que;
+		std::deque<int> tmp_que;
 
 		ss >> tmp;
 		if (ss.fail())
 			throw InvalidInputException();
 		if (tmp < 0)
 			throw InvalidInputException();
-		to_push.push(tmp);
+		to_push.push_back(tmp);
 		next = ss.peek();
 		while (std::isspace(next)) {
 			ss.get(next);
@@ -81,15 +81,15 @@ void PmergeMe::createLst(const std::string& i_sequence, std::list<int>& to_push)
 }
 
 
-void PmergeMe::devideQue(const std::queue<int>& original, std::queue<std::queue<int> >& to_push) {
-	std::queue<int> que_copy = original;
+void PmergeMe::devideDeQue(const std::deque<int>& original, std::deque<std::deque<int> >& to_push) {
+	std::deque<int> que_copy = original;
 
 	while (!que_copy.empty()) {
-		std::queue<int> tmp_que;
+		std::deque<int> tmp_que;
 
-		tmp_que.push(que_copy.front());
-		que_copy.pop();
-		to_push.push(tmp_que);
+		tmp_que.push_back(que_copy.front());
+		que_copy.pop_front();
+		to_push.push_back(tmp_que);
 	}
 }
 
@@ -105,26 +105,26 @@ void PmergeMe::devideLst(const std::list<int>& original, std::list<std::list<int
 	}
 }
 
-void PmergeMe::mergeQue(std::queue<std::queue<int> >& grand) {
-	std::queue<int> tmp_que;
-	std::queue<int> first = grand.front();
-	grand.pop();
-	std::queue<int> second = grand.front();
-	grand.pop();
+void PmergeMe::mergeDeQue(std::deque<std::deque<int> >& grand) {
+	std::deque<int> tmp_que;
+	std::deque<int> first = grand.front();
+	grand.pop_front();
+	std::deque<int> second = grand.front();
+	grand.pop_front();
 
 	while (!first.empty() || !second.empty()) {
 		if (second.empty()) {
-			tmp_que.push(first.front());
-			first.pop();
+			tmp_que.push_back(first.front());
+			first.pop_front();
 		} else if (first.empty() || first.front() > second.front()) {
-			tmp_que.push(second.front());
-			second.pop();
+			tmp_que.push_back(second.front());
+			second.pop_front();
 		} else {
-			tmp_que.push(first.front());
-			first.pop();
+			tmp_que.push_back(first.front());
+			first.pop_front();
 		}
 	}
-	grand.push(tmp_que);
+	grand.push_back(tmp_que);
 }
 
 void PmergeMe::mergeLst(std::list<std::list<int> >& grand) {
@@ -149,12 +149,12 @@ void PmergeMe::mergeLst(std::list<std::list<int> >& grand) {
 	grand.push_back(tmp_que);
 }
 
-void PmergeMe::printQue(const std::queue<int>& to_print) {
-	std::queue<int> copy = to_print;
+void PmergeMe::printDeQue(const std::deque<int>& to_print) {
+	std::deque<int> copy = to_print;
 
 	while (!copy.empty()) {
 		std::cout << copy.front();
-		copy.pop();
+		copy.pop_front();
 		if (!copy.empty())
 			std::cout << ' ';
 	}
@@ -172,6 +172,6 @@ void PmergeMe::printLst(const std::list<int>& to_print) {
 }
 
 void PmergeMe::printTimeSpent(const std::size_t& element_num, const Container& which, const std::clock_t& time) {
-	std::cout << "Time to process a range of " << element_num << " elements with std::" << (which == QUEUE ? "queue" : "list") << " : ";
+	std::cout << "Time to process a range of " << element_num << " elements with std::" << (which == DEQUE ? "queue" : "list") << " : ";
 	std::cout << ((static_cast<double>(time) / CLOCKS_PER_SEC * 1e6)) << " us" << std::endl;
 }

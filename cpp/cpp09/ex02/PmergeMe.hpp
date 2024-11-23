@@ -2,7 +2,7 @@
 #ifndef PMERGE_HPP
 # define PMERGE_HPP
 
-# include <queue>
+# include <deque>
 # include <list>
 # include <iostream>
 # include <string>
@@ -19,23 +19,23 @@ private:
 	PmergeMe& operator = (const PmergeMe& obj);
 
 	enum Container {
-		QUEUE,
+		DEQUE,
 		LIST,
 	};
 
-	static void createQue(const std::string& i_sequence, std::queue<int>& to_push);
+	static void createDeQue(const std::string& i_sequence, std::deque<int>& to_push);
 	static void createLst(const std::string& i_sequence, std::list<int>& to_push);
-	static void mergeQue(std::queue<std::queue<int> >& grand);
+	static void mergeDeQue(std::deque<std::deque<int> >& grand);
 	static void mergeLst(std::list<std::list<int> >& grand);
-	static void devideQue(const std::queue<int>& original, std::queue<std::queue<int> >& to_push);
+	static void devideDeQue(const std::deque<int>& original, std::deque<std::deque<int> >& to_push);
 	static void devideLst(const std::list<int>& original, std::list<std::list<int> >& to_push);
-	static void printQue(const std::queue<int>& to_print);
+	static void printDeQue(const std::deque<int>& to_print);
 	static void printLst(const std::list<int>& to_print);
 	static void printTimeSpent(const std::size_t& element_num, const Container& which, const std::clock_t& time);
 
 public:
 	class InvalidInputException: std::exception {};
-	static void mSortQue(const std::string& i_sequence);
+	static void mSortDeQue(const std::string& i_sequence);
 	static void mSortLst(const std::string& i_sequence);
 
 };
