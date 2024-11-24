@@ -77,14 +77,16 @@ int BitCoin::parseDate(const std::string& date_string, Date& date_struct) {
 	std::stringstream ss(trim(date_string));
 	char removed;
 
+	if (ss.str().length() != 10)
+		return 1;
 	ss >> date_struct.year;
-	if (ss.fail() || ss.eof())
+	if (ss.fail() || ss.eof() || ss.tellg() != 4)
 		return 1;
 	ss.get(removed);
 	if (removed != '-' || ss.fail() || ss.eof())
 		return 1;
 	ss >> date_struct.month;
-	if (ss.fail() || ss.eof())
+	if (ss.fail() || ss.eof() || ss.tellg() != 7)
 		return 1;
 	ss.get(removed);
 	if (removed != '-' || ss.fail() || ss.eof())
