@@ -2,41 +2,53 @@
 #ifndef PMERGE_HPP
 # define PMERGE_HPP
 
+# include <vector>
 # include <deque>
-# include <list>
 # include <iostream>
 # include <string>
-# include <exception>
 # include <ctime>
+# include <cmath>
 # include <sstream>
+
+typedef std::vector<int> vec;
+typedef std::vector<std::vector<int> > vec_vec;
+typedef std::deque<int> deq;
+typedef std::deque<std::deque<int> > deq_deq;
 
 class PmergeMe {
 
 private:
+	vec _i_seq;
+
+	enum Container {
+		DEQ,
+		VEC,
+	};
+	int genJacobSthal(int index);
+
+	void SortVec(vec_vec& input);
+	// void SortDeq(deq_deq& input);
+	void mSortVec(vec_vec& input, vec& left);
+	// void mSortDeq(deq_deq& input);
+	void iSortVec(vec_vec& input, vec& left);
+	// void iSortDeq(deq_deq& input);
+
+	vec_vec::iterator bSearchVec(vec_vec& grand, vec inserted, int range);
+	vec_vec createVecVec(void) const;
+	deq_deq createDeqDeq(void) const;
+	int printDeqDeq(const deq_deq& to_print);
+	int printVecVec(const vec_vec& to_print);
+	void printTimeSpent(const std::size_t& element_num, const Container& which, const std::clock_t& time);
+
+public:
 	PmergeMe(void);
 	~PmergeMe();
 	PmergeMe(const PmergeMe& obj);
 	PmergeMe& operator = (const PmergeMe& obj);
 
-	enum Container {
-		DEQUE,
-		LIST,
-	};
-
-	static void createDeQue(const std::string& i_sequence, std::deque<int>& to_push);
-	static void createLst(const std::string& i_sequence, std::list<int>& to_push);
-	static void mergeDeQue(std::deque<std::deque<int> >& grand);
-	static void mergeLst(std::list<std::list<int> >& grand);
-	static void devideDeQue(const std::deque<int>& original, std::deque<std::deque<int> >& to_push);
-	static void devideLst(const std::list<int>& original, std::list<std::list<int> >& to_push);
-	static void printDeQue(const std::deque<int>& to_print);
-	static void printLst(const std::list<int>& to_print);
-	static void printTimeSpent(const std::size_t& element_num, const Container& which, const std::clock_t& time);
-
-public:
-	class InvalidInputException: std::exception {};
-	static void mSortDeQue(const std::string& i_sequence);
-	static void mSortLst(const std::string& i_sequence);
+	int readInput(const std::string& i_sequence);
+	// int pMergeDeq(void);
+	int pMergeVec(void);
 
 };
 

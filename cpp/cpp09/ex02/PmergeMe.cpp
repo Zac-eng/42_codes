@@ -1,177 +1,238 @@
 #include "PmergeMe.hpp"
 
-void PmergeMe::mSortDeQue(const std::string& i_sequence) {
-	std::deque<int> input;
-	std::deque<std::deque<int> > grand;
+PmergeMe::PmergeMe(void) {}
+
+PmergeMe::~PmergeMe() {}
+
+PmergeMe::PmergeMe(const PmergeMe& object) {
+	*this = object;
+}
+
+PmergeMe& PmergeMe::operator = (const PmergeMe& object) {
+	this->_i_seq = object._i_seq;
+	return *this;
+}
+
+int PmergeMe::readInput(const std::string& i_sequence) {
+	std::stringstream ss(i_sequence);
+	int tmp;
+	char next;
+
+	while (!ss.eof()) {
+		ss >> tmp;
+		if (ss.fail())
+			return 1;
+		if (tmp < 0)
+			return 1;
+		_i_seq.push_back(tmp);
+		next = ss.peek();
+		while (std::isspace(next)) {
+			ss.get(next);
+			next = ss.peek();
+		}
+	}
+	return 0;
+}
+
+void PmergeMe::SortVec(vec_vec& input) {
+	vec left;
+
+	if (input.size() == 1)
+		return ;
+	mSortVec(input, left);
+	for (vec_vec::iterator i = input.begin(); i != input.end(); ++i) {
+		std::cout << "merged: " ;
+		for (vec::iterator j = i->begin(); j != i->end(); ++j) {
+			std::cout << *j << ", ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "end" << std::endl;
+	SortVec(input);
+	iSortVec(input, left);
+	for (vec_vec::iterator i = input.begin(); i != input.end(); ++i) {
+		std::cout << "inserted: " ;
+		for (vec::iterator j = i->begin(); j != i->end(); ++j) {
+			std::cout << *j << ", ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "end" << std::endl;
+}
+
+// void PmergeMe::SortDeq(deq_deq& input) {}
+
+void PmergeMe::mSortVec(vec_vec& input, vec& left) {
+	vec_vec merged;
+	vec first;
+	vec second;
+
+	while (input.size() > 1) {
+		first = input.front();
+		input.erase(input.begin());
+		second = input.front();
+		input.erase(input.begin());
+		if (first[0] < second[0]) {
+			second.insert(second.end(), first.begin(), first.end());
+			merged.push_back(second);
+		} else {
+			first.insert(first.end(), second.begin(), second.end());
+			merged.push_back(first);
+		}
+	}
+	if (input.size() == 1)
+		left = input.front();
+	input = merged;
+}
+
+// void PmergeMe::mSortDeq(deq_deq& input) {}
+
+void PmergeMe::iSortVec(vec_vec& input, vec& left) {
+	vec inserted;
+	int input_len = input.size();
+	int vec_len = input[0].size();
+	std::cout << "vec len: " << vec_len << std::endl;
+	int index = 2;
+	int insert_count = 0;
+	int prior_jacob = -1;
+
+	while (true) {
+		int last = genJacobSthal(index) - 1;
+		for (int i=last; i > prior_jacob; --i) {
+			if (i >= input_len) {
+				i = input_len;
+				if (left.size() == 0)
+					continue ;
+				else
+					inserted = left;
+			} else {
+				vec& target = input[i+insert_count];
+				std::cout << target.size() << std::endl;
+				inserted = vec(target.begin() + vec_len / 2, target.end());
+				target.resize(vec_len/2);
+				std::cout << target.size() << std::endl;
+			}
+			vec_vec::iterator insert_index = bSearchVec(input, inserted, i+insert_count);
+			input.insert(insert_index, inserted);
+			++insert_count;
+		}
+		if (last >= input_len)
+			break ;
+		prior_jacob = last;
+		++index;
+	}
+}
+
+// void PmergeMe::iSortDeq(deq_deq& input) {}
+
+// int PmergeMe::pMergeDeq(void) {
+// 	const deq_deq input = createDeqDeq();
+// 	deq_deq grand = input;
+// 	std::clock_t start;
+// 	std::clock_t end;
+
+// 	start = std::clock();
+// 	SortDeq(grand);
+// 	end = std::clock();
+// 	std::cout << "Before:\t";
+// 	printDeqDeq(input);
+// 	std::cout << std::endl;
+// 	std::cout << "After:\t";
+// 	printDeqDeq(grand);
+// 	std::cout << std::endl;
+// 	printTimeSpent(input.size(), DEQ, end - start);
+// 	return 0;
+// }
+
+int PmergeMe::pMergeVec(void) {
+	const vec_vec input = createVecVec();
+	vec_vec grand = input;
 	std::clock_t start;
 	std::clock_t end;
 
 	start = std::clock();
-	createDeQue(i_sequence, input);
-	devideDeQue(input, grand);
-	while (grand.size() > 1)
-		mergeDeQue(grand);
+	SortVec(grand);
 	end = std::clock();
 	std::cout << "Before:\t";
-	printDeQue(input);
+	printVecVec(input);
 	std::cout << std::endl;
 	std::cout << "After:\t";
-	printDeQue(grand.front());
+	if (printVecVec(grand) != 0)
+		return 1;
 	std::cout << std::endl;
-	printTimeSpent(input.size(), DEQUE, end - start);
+	printTimeSpent(input.size(), VEC, end - start);
+	return 0;
 }
 
-void PmergeMe::mSortLst(const std::string& i_sequence) {
-	std::list<int> input;
-	std::list<std::list<int> > grand;
-	std::clock_t start;
-	std::clock_t end;
+vec_vec PmergeMe::createVecVec(void) const {
+	vec_vec grand;
+	std::size_t len = _i_seq.size();
 
-	start = std::clock();
-	createLst(i_sequence, input);
-	devideLst(input, grand);
-	while (grand.size() > 1)
-		mergeLst(grand);
-	end = std::clock();
-	printTimeSpent(input.size(), LIST, end - start);
-}
-
-void PmergeMe::createDeQue(const std::string& i_sequence, std::deque<int>& to_push) {
-	std::stringstream ss(i_sequence);
-	int tmp;
-	char next;
-
-	while (!ss.eof()) {
-		std::deque<int> tmp_que;
-
-		ss >> tmp;
-		if (ss.fail())
-			throw InvalidInputException();
-		if (tmp < 0)
-			throw InvalidInputException();
-		to_push.push_back(tmp);
-		next = ss.peek();
-		while (std::isspace(next)) {
-			ss.get(next);
-			next = ss.peek();
-		}
+	for (std::size_t i = 0; i < len; ++i) {
+		vec tmp;
+		tmp.push_back(_i_seq[i]);
+		grand.push_back(tmp);
 	}
+	return grand;
 }
 
-void PmergeMe::createLst(const std::string& i_sequence, std::list<int>& to_push) {
-	std::stringstream ss(i_sequence);
-	int tmp;
-	char next;
+deq_deq PmergeMe::createDeqDeq(void) const {
+	deq_deq grand;
+	std::size_t len = _i_seq.size();
 
-	while (!ss.eof()) {
-		std::list<int> tmp_lst;
-
-		ss >> tmp;
-		if (ss.fail())
-			throw InvalidInputException();
-		if (tmp < 0)
-			throw InvalidInputException();
-		to_push.push_back(tmp);
-		next = ss.peek();
-		while (std::isspace(next)) {
-			ss.get(next);
-			next = ss.peek();
-		}
+	for (std::size_t i = 0; i < len; ++i) {
+		deq tmp;
+		tmp.push_back(_i_seq[i]);
+		grand.push_back(tmp);
 	}
+	return grand;
 }
 
 
-void PmergeMe::devideDeQue(const std::deque<int>& original, std::deque<std::deque<int> >& to_push) {
-	std::deque<int> que_copy = original;
+int PmergeMe::printDeqDeq(const deq_deq& to_print) {
+	std::size_t len = to_print.size();
 
-	while (!que_copy.empty()) {
-		std::deque<int> tmp_que;
-
-		tmp_que.push_back(que_copy.front());
-		que_copy.pop_front();
-		to_push.push_back(tmp_que);
-	}
-}
-
-void PmergeMe::devideLst(const std::list<int>& original, std::list<std::list<int> >& to_push) {
-	std::list<int> list_copy = original;
-
-	while (!list_copy.empty()) {
-		std::list<int> tmp_lst;
-
-		tmp_lst.push_back(list_copy.front());
-		list_copy.pop_front();
-		to_push.push_back(tmp_lst);
-	}
-}
-
-void PmergeMe::mergeDeQue(std::deque<std::deque<int> >& grand) {
-	std::deque<int> tmp_que;
-	std::deque<int> first = grand.front();
-	grand.pop_front();
-	std::deque<int> second = grand.front();
-	grand.pop_front();
-
-	while (!first.empty() || !second.empty()) {
-		if (second.empty()) {
-			tmp_que.push_back(first.front());
-			first.pop_front();
-		} else if (first.empty() || first.front() > second.front()) {
-			tmp_que.push_back(second.front());
-			second.pop_front();
-		} else {
-			tmp_que.push_back(first.front());
-			first.pop_front();
-		}
-	}
-	grand.push_back(tmp_que);
-}
-
-void PmergeMe::mergeLst(std::list<std::list<int> >& grand) {
-	std::list<int> tmp_que;
-	std::list<int> first = grand.front();
-	grand.pop_front();
-	std::list<int> second = grand.front();
-	grand.pop_front();
-
-	while (!first.empty() || !second.empty()) {
-		if (second.empty()) {
-			tmp_que.push_back(first.front());
-			first.pop_front();
-		} else if (first.empty() || first.front() > second.front()) {
-			tmp_que.push_back(second.front());
-			second.pop_front();
-		} else {
-			tmp_que.push_back(first.front());
-			first.pop_front();
-		}
-	}
-	grand.push_back(tmp_que);
-}
-
-void PmergeMe::printDeQue(const std::deque<int>& to_print) {
-	std::deque<int> copy = to_print;
-
-	while (!copy.empty()) {
-		std::cout << copy.front();
-		copy.pop_front();
-		if (!copy.empty())
+	for (std::size_t i = 0; i < len; ++i) {
+		if (to_print[i].size() == 0)
+			return 1;
+		std::cout << to_print[i].front();
+		if (i != len)
 			std::cout << ' ';
 	}
+	return 0;
 }
 
-void PmergeMe::printLst(const std::list<int>& to_print) {
-	std::list<int> copy = to_print;
+int PmergeMe::printVecVec(const vec_vec& to_print) {
+	std::size_t len = to_print.size();
 
-	while (!copy.empty()) {
-		std::cout << copy.front();
-		copy.pop_front();
-		if (!copy.empty())
+	for (std::size_t i = 0; i < len; ++i) {
+		if (to_print[i].size() == 0)
+			return 1;
+		std::cout << to_print[i].front();
+		if (i != len)
 			std::cout << ' ';
+	}
+	return 0;
+}
+
+int PmergeMe::genJacobSthal(int index) {
+	return (std::pow(2, index) - std::pow(-1, index)) / 3;
+}
+
+vec_vec::iterator PmergeMe::bSearchVec(vec_vec& grand, vec inserted, int range) {
+	vec_vec::iterator left = grand.begin();
+
+	while (true) {
+		if (range == 0)
+			return left;
+		range /= 2;
+		vec_vec::iterator access = left + range;
+		if (inserted[0] > (*access)[0])
+			left += range;
 	}
 }
 
 void PmergeMe::printTimeSpent(const std::size_t& element_num, const Container& which, const std::clock_t& time) {
-	std::cout << "Time to process a range of " << element_num << " elements with std::" << (which == DEQUE ? "queue" : "list") << " : ";
+	std::cout << "Time to process a range of " << element_num << " elements with std::" << (which == DEQ ? "deque" : "vector") << " : ";
 	std::cout << ((static_cast<double>(time) / CLOCKS_PER_SEC * 1e6)) << " us" << std::endl;
 }

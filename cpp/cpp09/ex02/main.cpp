@@ -1,6 +1,7 @@
 #include "PmergeMe.hpp"
 
 int main(int argc, char* argv[]) {
+	PmergeMe pm;
 	std::stringstream ss;
 
 	for (int i = 1; i < argc; ++i) {
@@ -8,12 +9,11 @@ int main(int argc, char* argv[]) {
 		if (i != argc - 1)
 			ss << " ";
 	}
-	try {
-		PmergeMe::mSortDeQue(ss.str());
-		PmergeMe::mSortLst(ss.str());
-	} catch (PmergeMe::InvalidInputException& iie) {
+	if (pm.readInput(ss.str()) != 0) {
 		std::cerr << "Error" << std::endl;
 		return 1;
 	}
+	// PmergeMe::mSortDeQue(ss.str());
+	pm.pMergeVec();
 	return 0;
 }
