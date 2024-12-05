@@ -88,37 +88,39 @@ void PmergeMe::mSortVec(vec_vec& input, vec& left) {
 // void PmergeMe::mSortDeq(deq_deq& input) {}
 
 void PmergeMe::iSortVec(vec_vec& input, vec& left) {
-	vec inserted;
 	int input_len = input.size();
 	int vec_len = input[0].size();
 	std::cout << "vec len: " << vec_len << std::endl;
 	int index = 2;
 	int insert_count = 0;
-	int prior_jacob = -1;
+	int prior_jacob = 0;
 
 	while (true) {
-		int last = genJacobSthal(index) - 1;
-		for (int i=last; i > prior_jacob; --i) {
-			if (i >= input_len) {
-				i = input_len;
-				if (left.size() == 0)
-					continue ;
-				else
-					inserted = left;
+		vec_vec insert_waitlist;
+		int jacob = genJacobSthal(index);
+		for (int i=prior_jacob+1; i <= jacob; ++i) {
+			if (i > input_len) {
+				if (left.size() != 0)
+					insert_waitlist.push_back(left);
+				break ;
 			} else {
-				vec& target = input[i+insert_count];
-				std::cout << target.size() << std::endl;
-				inserted = vec(target.begin() + vec_len / 2, target.end());
+				vec& target = input[i+insert_count-1];
+				insert_waitlist.push_back(vec(target.begin() + vec_len / 2, target.end()));
 				target.resize(vec_len/2);
-				std::cout << target.size() << std::endl;
 			}
-			vec_vec::iterator insert_index = bSearchVec(input, inserted, i+insert_count);
-			input.insert(insert_index, inserted);
+		}
+		std::cout << "waitlist len: " << insert_waitlist.size() << std::endl;
+		for (std::size_t i = 0; i < insert_waitlist.size(); ++i) {
+			std::cout << insert_waitlist[i][0] << std::endl;
+		}
+		for (vec_vec::iterator it = insert_waitlist.begin(); it != insert_waitlist.end(); ++it) {
+			vec_vec::iterator insert_index = bSearchVec(input, *it, std::min(jacob, input_len)+insert_count);
+			input.insert(insert_index, *it);
 			++insert_count;
 		}
-		if (last >= input_len)
+		if (jacob >= input_len)
 			break ;
-		prior_jacob = last;
+		prior_jacob = jacob;
 		++index;
 	}
 }
@@ -219,16 +221,22 @@ int PmergeMe::genJacobSthal(int index) {
 	return (std::pow(2, index) - std::pow(-1, index)) / 3;
 }
 
-vec_vec::iterator PmergeMe::bSearchVec(vec_vec& grand, vec inserted, int range) {
+vec_vec::iterator PmergeMe::bSearchVec(vec_vec& grand, vec& inserted, int range) {
 	vec_vec::iterator left = grand.begin();
 
+	std::cout << "search: " << inserted[0] << std::endl;
 	while (true) {
-		if (range == 0)
-			return left;
 		range /= 2;
+		if (range == 0) {
+			if (inserted[0] > (*left)[0])
+				++left;
+			return left;
+		}
 		vec_vec::iterator access = left + range;
+		std::cout << "bsearch"<< inserted[0] <<" : "<< (*access)[0] << std::endl;
 		if (inserted[0] > (*access)[0])
 			left += range;
+		std::cout << "left: " << (*left)[0] << std::endl;
 	}
 }
 

@@ -33,7 +33,7 @@ private:
 	void iSortVec(vec_vec& input, vec& left);
 	// void iSortDeq(deq_deq& input);
 
-	vec_vec::iterator bSearchVec(vec_vec& grand, vec inserted, int range);
+	vec_vec::iterator bSearchVec(vec_vec& grand, vec& inserted, int range);
 	vec_vec createVecVec(void) const;
 	deq_deq createDeqDeq(void) const;
 	int printDeqDeq(const deq_deq& to_print);
