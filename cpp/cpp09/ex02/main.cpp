@@ -13,7 +13,10 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Error" << std::endl;
 		return 1;
 	}
-	// PmergeMe::mSortDeQue(ss.str());
 	pm.pMergeVec();
+	pm.pMergeDeq();
 	return 0;
 }
+
+//command for testing:
+// ./PmergeMe $(python3 -c "import random; n=1000; print(' '.join(str(random.randint(1, 100000)) for _ in range(n)))")

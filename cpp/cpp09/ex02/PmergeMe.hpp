@@ -27,13 +27,14 @@ private:
 	int genJacobSthal(int index);
 
 	void SortVec(vec_vec& input);
-	// void SortDeq(deq_deq& input);
+	void SortDeq(deq_deq& input);
 	void mSortVec(vec_vec& input, vec& left);
-	// void mSortDeq(deq_deq& input);
+	void mSortDeq(deq_deq& input, deq& left);
 	void iSortVec(vec_vec& input, vec& left);
-	// void iSortDeq(deq_deq& input);
+	void iSortDeq(deq_deq& input, deq& left);
 
 	vec_vec::iterator bSearchVec(vec_vec& grand, vec& inserted, int range);
+	deq_deq::iterator bSearchDeq(deq_deq& grand, deq& inserted, int range);
 	vec_vec createVecVec(void) const;
 	deq_deq createDeqDeq(void) const;
 	int printDeqDeq(const deq_deq& to_print);
@@ -47,7 +48,7 @@ public:
 	PmergeMe& operator = (const PmergeMe& obj);
 
 	int readInput(const std::string& i_sequence);
-	// int pMergeDeq(void);
+	int pMergeDeq(void);
 	int pMergeVec(void);
 
 };
