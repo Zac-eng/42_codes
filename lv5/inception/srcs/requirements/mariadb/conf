@@ -1,5 +1,12 @@
 [mysqld]
-character-set-server = utf8mb4
-collation-server = utf8mb4_general_ci
+datadir=/var/lib/mysql
+user=mysql
+
+[server]
 bind-address = 0.0.0.0
+port=3306
+init_file = /docker-entrypoint-initdb.d/init.sql
+
+[client]
+host=0.0.0.0
 port=3306

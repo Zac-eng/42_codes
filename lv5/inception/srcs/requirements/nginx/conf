@@ -3,7 +3,7 @@ server {
   root /var/www/html;
   index index.php;
   resolver 127.0.0.1;
-  
+
   server_name ${DOMAIN_NAME};
 
   ssl_certificate /etc/nginx/ssl/server.nginx.pem;
