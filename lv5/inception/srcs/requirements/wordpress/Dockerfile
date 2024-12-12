@@ -5,8 +5,7 @@ ENV PHP_VERSION=8.2
 RUN apt update && apt install -y \
   php${PHP_VERSION}-fpm \
   php${PHP_VERSION}-mysql \
-  mariadb-client \
-  wget unzip
+  wget unzip sudo
 
 COPY php.ini /usr/local/etc/php/
 COPY conf /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf

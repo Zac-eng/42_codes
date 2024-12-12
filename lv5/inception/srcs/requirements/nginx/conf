@@ -35,7 +35,7 @@ server {
     }
     # https://httpoxy.org/ の脆弱性を緩和する
     fastcgi_param HTTP_PROXY "";
-  
+
     fastcgi_pass wordpress:9000; 
 
     fastcgi_index index.php;

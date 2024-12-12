@@ -1,12 +1,13 @@
-[mysqld]
-datadir=/var/lib/mysql
-user=mysql
-
 [server]
-bind-address = 0.0.0.0
-port=3306
 init_file = /docker-entrypoint-initdb.d/init.sql
 
+[mysqld]
+datadir = /var/lib/mysql
+port = 3306
+user = root
+bind-address = 0.0.0.0
+max_connections = 100
+
 [client]
-host=0.0.0.0
-port=3306
+port = 3306
+protocol = tcp

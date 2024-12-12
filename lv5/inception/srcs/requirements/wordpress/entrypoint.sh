@@ -11,11 +11,19 @@ wget https://wordpress.org/latest.tar.gz && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 chown -R www-data:www-data /var/www/html/ && \
-    chmod -R 755 /var/www/html/
+chmod -R 755 /var/www/html/
 
-echo "define( 'DB_NAME', 'wordpress_db' );" >> /var/www/html/wp-config.php
-echo "define( 'DB_USER', 'hmiyazak' );" >> /var/www/html/wp-config.php
-echo "define( 'DB_PASSWORD', 'harutoM1yazak1' );" >> /var/www/html/wp-config.php
-echo "define( 'DB_HOST', 'mariadb' );" >> /var/www/html/wp-config.php
+wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+mv wp-cli.phar /usr/local/bin/wp
+
+useradd -m env_setter
+sudo -u env_setter -i -- \
+wp config create \
+    --path=/var/www/html \
+    --dbname=${MYSQL_DATABASE} \
+    --dbuser=${MYSQL_USER} \
+    --dbhost=mariadb \
+    --dbpass=${MYSQL_PASSWORD}
 
 exec "$@"

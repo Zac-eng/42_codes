@@ -2,8 +2,7 @@ FROM debian:12
 
 RUN apt update && apt install -y mariadb-server
 
-COPY ./conf /etc/mysql/conf.d/my.cnf
-
+COPY ./conf /etc/mysql/my.cnf
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
