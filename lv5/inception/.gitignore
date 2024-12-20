@@ -1,2 +1,3 @@
 ./srcs/requirements/nginx/credencials
 ./srcs/requirements/.env
+*/.vscode

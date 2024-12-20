@@ -45,3 +45,4 @@ networks:
   proxy:
 
   database:
+    driver: bridge
