@@ -6,8 +6,8 @@ server {
 
   server_name DOMAIN_NAME;
 
-  ssl_certificate CERTS_/server.nginx.pem;
-  ssl_certificate_key CERTS_/server.key;
+  ssl_certificate CERTS_LOCATION/server.nginx.pem;
+  ssl_certificate_key CERTS_LOCATION/server.key;
   ssl_session_timeout 1d;
   ssl_session_cache shared:MozSSL:10m;
   ssl_session_tickets off;
@@ -20,7 +20,7 @@ server {
   ssl_stapling on;
   ssl_stapling_verify on;
 
-  ssl_trusted_certificate CERTS_/server.nginx.pem;
+  ssl_trusted_certificate CERTS_LOCATION/server.nginx.pem;
 
   location / {
     root /var/www/html;
