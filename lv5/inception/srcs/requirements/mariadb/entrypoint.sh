@@ -13,7 +13,6 @@ mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 INIT_FILE="/docker-entrypoint-initdb.d/init.sql"
 chmod 755 $INIT_FILE
 
-echo "ALTER USER root@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';" >> $INIT_FILE
 echo "CREATE DATABASE $MYSQL_DATABASE DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" >> $INIT_FILE
 echo "CREATE USER 'boss'@'%' IDENTIFIED BY 'b0ss_passW0rd';" >> $INIT_FILE
 echo "GRANT ALL PRIVILEGES ON wordpress_db.* TO 'boss'@'%';" >> $INIT_FILE
