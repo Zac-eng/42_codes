@@ -4,10 +4,10 @@ server {
   index index.php;
   resolver 127.0.0.1;
 
-  server_name ${DOMAIN_NAME};
+  server_name DOMAIN_NAME;
 
-  ssl_certificate /etc/nginx/ssl/server.nginx.pem;
-  ssl_certificate_key /etc/nginx/ssl/server.key;
+  ssl_certificate CERTS_/server.nginx.pem;
+  ssl_certificate_key CERTS_/server.key;
   ssl_session_timeout 1d;
   ssl_session_cache shared:MozSSL:10m;
   ssl_session_tickets off;
@@ -20,7 +20,7 @@ server {
   ssl_stapling on;
   ssl_stapling_verify on;
 
-  ssl_trusted_certificate /etc/nginx/ssl/server.nginx.pem;
+  ssl_trusted_certificate CERTS_/server.nginx.pem;
 
   location / {
     root /var/www/html;
