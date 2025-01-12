@@ -1,4 +1,4 @@
-FROM debian:12
+FROM debian:bullseye
 
 ENV PHP_VERSION=8.2
 
