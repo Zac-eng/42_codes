@@ -1,8 +1,8 @@
 FROM debian:bullseye
 
-ENV PHP_VERSION=8.2
+ENV PHP_VERSION=7.4
 
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get install -y \
   php${PHP_VERSION}-fpm \
   php${PHP_VERSION}-mysql \
   wget unzip sudo
@@ -18,4 +18,4 @@ EXPOSE 9000
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
-CMD [ "php-fpm8.2", "-F" ]
+CMD [ "php-fpm7.4", "-F" ]

@@ -30,4 +30,6 @@ wp config create \
     --dbhost=mariadb \
     --dbpass=${MYSQL_PASSWORD}
 
+mkdir -p /run/php
+
 exec "$@"
