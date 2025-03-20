@@ -5,6 +5,7 @@ ENV PHP_VERSION=7.4
 RUN apt-get update && apt-get install -y \
   php${PHP_VERSION}-fpm \
   php${PHP_VERSION}-mysql \
+  mariadb-client \
   wget unzip sudo
 
 COPY php.ini /usr/local/etc/php/
