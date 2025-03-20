@@ -12,7 +12,7 @@ mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 INIT_FILE="/docker-entrypoint-initdb.d/init.sql"
 
 echo "CREATE DATABASE $MYSQL_DATABASE DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" >> $INIT_FILE
-echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASS';" >> $INIT_FILE
+echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$(cat /run/secrets/mysql_pass)';" >> $INIT_FILE
 echo "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';" >> $INIT_FILE
 echo "FLUSH PRIVILEGES;" >> $INIT_FILE
 

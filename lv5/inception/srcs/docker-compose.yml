@@ -14,8 +14,8 @@ services:
     networks:
       - proxy
     secrets:
-      - server-certificate
-      - server-key
+      - server_certificate
+      - server_key
     depends_on:
       - wordpress
 
@@ -30,6 +30,10 @@ services:
     networks:
       - proxy
       - database
+    secrets:
+      - mysql_pass
+      - wp_admin_pass
+      - wp_user_pass
     depends_on:
       - mariadb
 
@@ -43,6 +47,8 @@ services:
       - ~/data/mysql:/var/lib/mysql
     networks:
       - database
+    secrets:
+      - mysql_pass
 
 networks:
   proxy:
@@ -50,8 +56,14 @@ networks:
   database:
 
 secrets:
-  server-certificate:
-    file: ./server.nginx.pem
-  server-key:
-    file: ./server.key
+  server_certificate:
+    file: ./secrets/server.nginx.pem
+  server_key:
+    file: ./secrets/server.key
+  mysql_pass:
+    file: ./secrets/db_password.txt
+  wp_admin_pass:
+    file: ./secrets/wp_admin_password.txt
+  wp_user_pass:
+    file: ./secrets/wp_user_password.txt
   

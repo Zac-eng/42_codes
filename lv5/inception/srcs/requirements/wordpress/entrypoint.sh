@@ -28,7 +28,7 @@ wp config create \
     --dbname=${MYSQL_DATABASE} \
     --dbuser=${MYSQL_USER} \
     --dbhost=mariadb \
-    --dbpass=$(cat /run/secret/mysql_pass)
+    --dbpass=$(cat /run/secrets/mysql_pass)
 
 sudo -u wp-installer -i -- \
 wp core install \
@@ -36,16 +36,16 @@ wp core install \
     --url="https://${DOMAIN_NAME}" \
     --title="${WP_TITLE}" \
     --admin_user="${WP_ADMIN}" \
-    --admin_password="${WP_ADMIN_PASS}" \
+    --admin_password="$(cat /run/secrets/wp_admin_pass)" \
     --admin_email="${WP_ADMIN_EMAIL}"
 
 sudo -u wp-installer -i -- \
 wp user create ${WP_USER} ${WP_USER_EMAIL} \
     --path=/var/www/html \
-    --user_pass=${WP_USER_PASS}
+    --user_pass=$(cat /run/secrets/wp_user_pass)
 
 #runnning wordpress with the user www-data
-chown -R www-data:www-data /var/www/html/ && \
+chown -R www-data:www-data /var/www/html/
 
 mkdir -p /run/php
 
