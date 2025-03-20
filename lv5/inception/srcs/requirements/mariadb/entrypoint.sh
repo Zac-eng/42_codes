@@ -10,7 +10,6 @@ mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql && rm -rf /var/li
 mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 
 INIT_FILE="/docker-entrypoint-initdb.d/init.sql"
-chmod 755 $INIT_FILE
 
 echo "CREATE DATABASE $MYSQL_DATABASE DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" >> $INIT_FILE
 echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASS';" >> $INIT_FILE

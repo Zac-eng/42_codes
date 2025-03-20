@@ -1,3 +1,7 @@
 ./srcs/requirements/nginx/credencials
-.env
+./srcs/.env
 */.vscode
+server.key
+server.nginx.pem
+.env
+.env*

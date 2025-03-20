@@ -13,6 +13,9 @@ services:
       - ~/data/wordpress_files:/var/www/html
     networks:
       - proxy
+    secrets:
+      - server-certificate
+      - server-key
     depends_on:
       - wordpress
 
@@ -38,8 +41,6 @@ services:
       - .env
     volumes:
       - ~/data/mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
     networks:
       - database
 
@@ -47,4 +48,10 @@ networks:
   proxy:
 
   database:
-    driver: bridge
+
+secrets:
+  server-certificate:
+    file: ./server.nginx.pem
+  server-key:
+    file: ./server.key
+  

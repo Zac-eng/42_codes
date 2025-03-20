@@ -15,14 +15,7 @@ RUN chown -R www-data:www-data /var/www/ \
 && chmod -R 755 /var/www/
 
 COPY ./conf /etc/nginx/conf.d/default.conf
-COPY ./credencials/server.nginx.pem /etc/nginx/ssl/server.nginx.pem
-COPY ./credencials/server.key /etc/nginx/ssl/server.key
 
 EXPOSE 443
-
-COPY ./entrypoint.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 CMD [ "nginx", "-g", "daemon off;" ]
