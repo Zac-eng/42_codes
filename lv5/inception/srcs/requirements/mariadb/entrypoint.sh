@@ -5,7 +5,7 @@ set -e
 
 mkdir -p /run/mysqld  && chown -R mysql:mysql /run/mysqld && chmod 755 /run/mysqld
 mkdir -p /var/log/mysql && chown -R mysql:mysql /var/log/mysql && chmod 755 /var/log/mysql
-mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql && rm -rf /var/lib/mysql/*
+mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql && chmod 755 /var/lib/mysql
 
 mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 

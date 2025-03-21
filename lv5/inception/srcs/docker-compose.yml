@@ -10,7 +10,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - ~/data/wordpress_files:/var/www/html
+      - wordpress_files:/var/www/html
     networks:
       - proxy
     secrets:
@@ -26,7 +26,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ~/data/wordpress_files:/var/www/html
+      - wordpress_files:/var/www/html
     networks:
       - proxy
       - database
@@ -44,11 +44,26 @@ services:
     env_file:
       - .env
     volumes:
-      - ~/data/mysql:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     networks:
       - database
     secrets:
       - mysql_pass
+
+volumes:
+  wordpress_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hmiyazak/data/wordpress_files
+
+  mysql_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/hmiyazak/data/mysql
 
 networks:
   proxy:
