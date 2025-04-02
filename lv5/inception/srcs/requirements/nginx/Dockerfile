@@ -18,4 +18,7 @@ COPY ./conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
-CMD [ "nginx", "-g", "daemon off;" ]
+COPY ./entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT [ "/usr/local/bin/entrypoing.sh" ]

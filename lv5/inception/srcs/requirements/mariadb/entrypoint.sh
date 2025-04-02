@@ -16,4 +16,4 @@ echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$(cat /run/secrets/mysql_pass
 echo "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';" >> $INIT_FILE
 echo "FLUSH PRIVILEGES;" >> $INIT_FILE
 
-exec "$@"
+mysqld_safe

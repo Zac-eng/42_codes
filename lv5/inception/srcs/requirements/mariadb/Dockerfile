@@ -14,5 +14,3 @@ EXPOSE 3306
 USER root
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-CMD ["mysqld_safe"]

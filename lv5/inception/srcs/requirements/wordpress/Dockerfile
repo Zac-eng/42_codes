@@ -17,5 +17,3 @@ WORKDIR /var/www/html
 EXPOSE 9000
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
-
-CMD [ "php-fpm7.4", "-F" ]
