@@ -67,8 +67,9 @@ volumes:
 
 networks:
   proxy:
-
+    driver: bridge
   database:
+    driver: bridge
 
 secrets:
   server_certificate:

@@ -18,7 +18,7 @@ COPY ./conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
-COPY ./entrypoint.sh /usr/local/bin/
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT [ "/usr/local/bin/entrypoing.sh" ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]

@@ -49,4 +49,4 @@ chown -R www-data:www-data /var/www/html/
 
 mkdir -p /run/php
 
-php-fpm7.4 -F
+php-fpm${PHP_VERSION} -F

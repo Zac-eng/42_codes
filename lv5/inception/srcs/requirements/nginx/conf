@@ -4,7 +4,7 @@ server {
   index index.php;
   resolver 127.0.0.1;
 
-  server_name DOMAIN_NAME;
+  server_name ${DOMAIN_NAME};
 
   ssl_certificate /run/secrets/server_certificate;
   ssl_certificate_key /run/secrets/server_key;
